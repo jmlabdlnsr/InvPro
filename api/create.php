@@ -5,6 +5,13 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    header("Access-Control-Allow-Methods: POST, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+    http_response_code(200);
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(["message" => "Method Not Allowed. Use POST."]);
@@ -22,8 +29,8 @@ $data = json_decode(file_get_contents("php://input"));
 
 if(
     !empty($data->nama_barang) &&
-    !empty($data->harga) &&
-    isset($data->stok)
+    isset($data->harga) && $data->harga !== "" &&
+    isset($data->stok) && $data->stok !== ""
 ) {
     if($data->stok < 0) {
         http_response_code(400);

@@ -5,6 +5,13 @@ header("Access-Control-Allow-Methods: DELETE");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    header("Access-Control-Allow-Methods: DELETE, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+    http_response_code(200);
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') {
     http_response_code(405);
     echo json_encode(["message" => "Method Not Allowed. Use DELETE."]);

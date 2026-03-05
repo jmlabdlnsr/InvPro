@@ -119,18 +119,19 @@
     };
 
     let isEditMode = false;
+    let allItems = []; // Simpan data di variabel global
 
     async function loadData() {
         try {
             const res = await fetch(API_URLS.read);
             const data = await res.json();
-            const items = data.records || [];
+            allItems = data.records || [];
             const tbody = document.getElementById('api-table-body');
             
-            if (items.length === 0) {
+            if (allItems.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="4" class="px-6 py-12 text-center text-slate-400 text-sm italic">Database API Kosong.</td></tr>`;
             } else {
-                tbody.innerHTML = items.map(item => `
+                tbody.innerHTML = allItems.map(item => `
                     <tr class="hover:bg-slate-50 transition-colors group">
                         <td class="px-5 sm:px-6 py-4">
                             <div class="flex items-center min-w-[120px]">
@@ -149,7 +150,7 @@
                             </span>
                         </td>
                         <td class="px-5 sm:px-6 py-4 text-right space-x-1 sm:space-x-2 whitespace-nowrap">
-                            <button onclick='openEdit(${JSON.stringify(item)})' class="text-indigo-600 hover:bg-indigo-50 p-2 rounded-lg transition-colors" title="Edit">
+                            <button onclick="openEdit(${item.id})" class="text-indigo-600 hover:bg-indigo-50 p-2 rounded-lg transition-colors" title="Edit">
                                 <i class="fas fa-edit text-xs sm:text-sm"></i>
                             </button>
                             <button onclick="deleteItem(${item.id})" class="text-rose-600 hover:bg-rose-50 p-2 rounded-lg transition-colors" title="Hapus">
@@ -161,10 +162,10 @@
             }
 
             // Update Statistik
-            const totalStok = items.reduce((a, b) => a + parseInt(b.stok), 0);
-            const totalNilai = items.reduce((a, b) => a + (parseInt(b.harga) * parseInt(b.stok)), 0);
+            const totalStok = allItems.reduce((a, b) => a + parseInt(b.stok), 0);
+            const totalNilai = allItems.reduce((a, b) => a + (parseInt(b.harga) * parseInt(b.stok)), 0);
             
-            document.getElementById('stat-jenis').innerText = items.length;
+            document.getElementById('stat-jenis').innerText = allItems.length;
             document.getElementById('stat-stok').innerText = totalStok;
             document.getElementById('stat-nilai').innerText = `Rp ${totalNilai.toLocaleString('id-ID')}`;
 
@@ -205,7 +206,7 @@
                 body: JSON.stringify({ id: id })
             });
             const result = await res.json();
-            showToast(result.message, 'success');
+            showToast(result.message, res.ok ? 'success' : 'error');
             loadData();
         } catch (err) { showToast("Gagal menghapus", "error"); }
     }
@@ -216,7 +217,10 @@
         const inner = modal.querySelector('div');
         isEditMode = (mode === 'edit');
         document.getElementById('modal-title').innerText = isEditMode ? 'Edit Data Barang' : 'Tambah Barang Baru';
-        if (!isEditMode) document.getElementById('form-barang').reset();
+        if (!isEditMode) {
+            document.getElementById('form-barang').reset();
+            document.getElementById('item-id').value = '';
+        }
 
         if (modal.classList.contains('hidden')) {
             modal.classList.remove('hidden');
@@ -237,7 +241,10 @@
         }
     }
 
-    function openEdit(item) {
+    function openEdit(id) {
+        const item = allItems.find(i => i.id == id);
+        if (!item) return;
+
         toggleModal('modal-barang', 'edit');
         document.getElementById('item-id').value = item.id;
         document.getElementById('nama_barang').value = item.nama_barang;
