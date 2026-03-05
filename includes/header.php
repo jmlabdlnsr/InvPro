@@ -28,11 +28,6 @@
                         Inv<span class="text-indigo-600">Pro</span>
                     </span>
                 </div>
-                <div class="flex items-center">
-                    <span class="text-[10px] sm:text-xs font-bold px-2 py-1 bg-emerald-50 text-emerald-600 rounded-full border border-emerald-100 uppercase tracking-wider">
-                        <span class="hidden sm:inline">API</span> Connected
-                    </span>
-                </div>
             </div>
         </div>
     </nav>

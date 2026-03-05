@@ -3,11 +3,7 @@
 <!-- Page Title & CTA -->
 <div class="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
     <div class="flex-1">
-        <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 leading-tight">Daftar Inventaris</h2>
-        <p class="mt-1 text-xs sm:text-sm text-slate-500 italic flex items-center gap-1.5">
-            <i class="fas fa-sync-alt text-indigo-500 animate-spin-slow"></i> 
-            Data Real-time via API
-        </p>
+        <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 leading-tight">Daftar Barang</h2>
     </div>
     <div class="flex">
         <button onclick="toggleModal('modal-barang', 'add')" class="w-full sm:w-auto inline-flex items-center justify-center px-5 py-2.5 sm:px-6 border border-transparent rounded-xl shadow-lg shadow-indigo-100 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 active:scale-95 transition-all">
