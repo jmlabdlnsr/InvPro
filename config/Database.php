@@ -1,6 +1,5 @@
 <?php
 class Database {
-    // Sesuaikan konfigurasi ini dengan server Anda
     private $host = "localhost";
     private $db_name = "inventory_db";
     private $username = "root";
